@@ -36,9 +36,12 @@ services:
     networks:
       - e2e
     restart: on-failure
+    volumes:
+      - ../../jacoco:/jacoco
     environment:
       - SW_STORAGE=influxdb
       - SW_STORAGE_INFLUXDB_URL=http://influxdb:8086
+      - JAVA_OPTS=-javaagent:/jacoco/jacocoagent.jar=classdumpdir=/jacoco/classes/oap,destfile=/jacoco/jacoco.exec,classdumpdir=/jacoco/classes/oap,includes=org.apache.skywalking.*,excludes=org.apache.skywalking.apm.dependencies.*:org.apache.skywalking.oap.query.*:org.apache.skywalking.oap.server.core.query.*
     depends_on:
       influxdb:
         condition: service_healthy

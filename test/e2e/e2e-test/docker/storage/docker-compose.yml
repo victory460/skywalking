@@ -36,6 +36,8 @@ services:
       - e2e
     expose:
       - 9090
+    volumes:
+      - ../../jacoco:/jacoco
     environment:
       - SW_AGENT_COLLECTOR_BACKEND_SERVICES=oap:11800
     depends_on:

@@ -41,6 +41,7 @@ services:
       - e2e
     volumes:
       - ./download-mysql.sh:/download-mysql.sh
+      - ../../jacoco:/jacoco
     restart: on-failure
     depends_on:
       mysql:
@@ -48,6 +49,7 @@ services:
     environment:
       - SW_STORAGE=mysql
       - SW_JDBC_URL=jdbc:mysql://mysql:3306/swtest
+      - JAVA_OPTS=-javaagent:/jacoco/jacocoagent.jar=classdumpdir=/jacoco/classes/oap,destfile=/jacoco/jacoco.exec,classdumpdir=/jacoco/classes/oap,includes=org.apache.skywalking.*,excludes=org.apache.skywalking.apm.dependencies.*:org.apache.skywalking.oap.query.*:org.apache.skywalking.oap.server.core.query.*
     entrypoint: ['bash', '-c', '/download-mysql.sh && /skywalking/docker-entrypoint.sh']
     healthcheck:
       test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/11800"]

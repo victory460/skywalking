@@ -37,9 +37,12 @@ services:
       - 12800
     networks:
       - e2e
+    volumes:
+      - ../../jacoco:/jacoco
     environment:
       - SW_STORAGE=elasticsearch
       - SW_STORAGE_ES_CLUSTER_NODES=es:9200
+      - JAVA_OPTS=-javaagent:/jacoco/jacocoagent.jar=classdumpdir=/jacoco/classes/oap,destfile=/jacoco/jacoco.exec,classdumpdir=/jacoco/classes/oap,includes=org.apache.skywalking.*,excludes=org.apache.skywalking.apm.dependencies.*:org.apache.skywalking.oap.query.*:org.apache.skywalking.oap.server.core.query.*
     restart: on-failure
     healthcheck:
       test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/11800"]
